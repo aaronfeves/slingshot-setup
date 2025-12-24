@@ -1,0 +1,1 @@
+https://ssh.cloud.google.com/cloudshell/editor?cloudshell_command=docker%20run%20-it%20--rm%20-e%20CLOUDSDK_CORE_PROJECT%3D%24(gcloud%20config%20get-value%20project)%20aaronfeves/slingshot-installer:latest
