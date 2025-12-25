@@ -29,7 +29,7 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PARENT_DIR="$(dirname "$PROJECT_DIR")"
 
 # 3. Move up so we aren't "using" the folder we are about to delete
-cd "$HOME"
+cd ~/
 
 # 4. Delete the specific project folder (e.g., slingshot-setup-2)
 rm -rf "$PROJECT_DIR"
