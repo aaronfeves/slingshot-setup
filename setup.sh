@@ -5,6 +5,10 @@ echo "          SLINGSHOT TRADING SERVER INSTALLER"
 echo "=========================================================="
 echo "Initializing environment... please wait."
 
+# 0. Kill everything on Control-C immediately
+trap "exit" INT 
+
+
 # 1. Force the latest image pull
 # This ensures users get the V1.4 Project Validation logic even if they have a cached image
 docker pull aaronfeves/slingshot-installer:latest
