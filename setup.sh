@@ -1,44 +1,43 @@
 #!/bin/bash
-
-# Clear the screen to provide a clean, professional interface
 clear
-
 echo "=========================================================="
 echo "          SLINGSHOT TRADING SERVER INSTALLER"
 echo "=========================================================="
 echo "Initializing environment... please wait."
-echo ""
 
-# Launch the private Docker container with interactive flags
-# This pulls your latest code, Terraform logic, and installers
+# 1. Force the latest image pull
+# This ensures users get the V1.4 Project Validation logic even if they have a cached image
+docker pull aaronfeves/slingshot-installer:latest
+
+# 2. Run the Installer
+# We pass the current Project ID if it exists to help the container authenticate
 docker run -it --rm \
-  -e CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project) \
+  -e CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project 2>/dev/null) \
   aaronfeves/slingshot-installer:latest
 
-# Optional: Clear the screen again after the user exits the installer
-clear
-
-# --- Smart Cleanup & Return Home ---
+# 3. Smart Cleanup Section
+echo ""
 echo ">>> Performing thorough cleanup..."
 
-# 1. Identify paths
+# Identify the project folder and its parent (cloudshell_open)
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PARENT_DIR="$(dirname "$PROJECT_DIR")"
 
-# 2. Move to the actual Home directory
+# Move to the home directory so we can safely delete the current folder
 cd "$HOME"
 
-# 3. Delete the specific project folder
+# Delete the specific project folder cloned from GitHub
 rm -rf "$PROJECT_DIR"
 
-# 4. Delete parent folder IF it is now empty
+# If 'cloudshell_open' is now empty, remove it to keep the home directory pristine
 if [ -d "$PARENT_DIR" ] && [ "$(ls -A "$PARENT_DIR" 2>/dev/null)" = "" ]; then
     rmdir "$PARENT_DIR"
-    echo ">>> Project and empty parent folder removed."
+    echo ">>> Cleanup complete: Project and empty parent folder removed."
 else
-    echo ">>> Project removed (parent folder still in use)."
+    echo ">>> Cleanup complete: Project removed."
 fi
 
 echo ">>> Deployment finished. Returning you to the home prompt..."
-# 5. Launch a new interactive shell at the Home directory
+
+# 4. Refresh the shell to land the user back at the ~/ prompt
 exec bash
