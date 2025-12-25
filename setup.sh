@@ -17,4 +17,13 @@ docker run -it --rm \
 
 # Optional: Clear the screen again after the user exits the installer
 clear
-echo "Slingshot session ended."
+# --- Cleanup Section ---
+echo ">>> Cleaning up installation files..."
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Delete the directory and everything in it
+# This happens at the very end so the script can finish executing
+cd ..
+rm -rf "$SCRIPT_DIR"
+echo ">>> Cleanup complete. Cloud Shell is ready."
