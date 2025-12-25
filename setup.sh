@@ -18,27 +18,27 @@ docker run -it --rm \
 # Optional: Clear the screen again after the user exits the installer
 clear
 
-# --- Smart Cleanup Section ---
+# --- Smart Cleanup & Return Home ---
 echo ">>> Performing thorough cleanup..."
 
-rm ~/README-cloudshell.txt
-
-# 1. Get the path of the specific project folder we are in
+# 1. Identify paths
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# 2. Get the path of the parent 'cloudshell_open' folder
 PARENT_DIR="$(dirname "$PROJECT_DIR")"
 
-# 3. Move up so we aren't "using" the folder we are about to delete
-cd ~/
+# 2. Move to the actual Home directory
+cd "$HOME"
 
-# 4. Delete the specific project folder (e.g., slingshot-setup-2)
+# 3. Delete the specific project folder
 rm -rf "$PROJECT_DIR"
 
-# 5. Check if the parent 'cloudshell_open' folder is now empty
-# If it's empty (aside from . and ..), delete it to keep things pristine
+# 4. Delete parent folder IF it is now empty
 if [ -d "$PARENT_DIR" ] && [ "$(ls -A "$PARENT_DIR" 2>/dev/null)" = "" ]; then
     rmdir "$PARENT_DIR"
-    echo ">>> Cleanup complete: Project and empty parent folder removed."
+    echo ">>> Project and empty parent folder removed."
 else
-    echo ">>> Cleanup complete: Project removed (parent folder still contains other items)."
+    echo ">>> Project removed (parent folder still in use)."
 fi
+
+echo ">>> Deployment finished. Returning you to the home prompt..."
+# 5. Launch a new interactive shell at the Home directory
+exec bash
