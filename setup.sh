@@ -24,6 +24,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Delete the directory and everything in it
 # This happens at the very end so the script can finish executing
+rm ~/README_cloudshell.txt
 cd ..
 rm -rf "$SCRIPT_DIR"
 echo ">>> Cleanup complete. Cloud Shell is ready."
