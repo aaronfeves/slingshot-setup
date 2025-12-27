@@ -1,29 +1,20 @@
 #!/bin/bash
-trap "exit" INT 
 clear
 echo "=========================================================="
 echo "          SLINGSHOT TRADING SERVER INSTALLER"
 echo "=========================================================="
-echo "Initializing environment... please wait."
+echo "Checking for software updates..."
 
-# 1. FORCE UPDATE: This deletes the old image so the user gets V1.6
-echo ">>> Checking for software updates..."
+# Force remove the old local image to ensure the fresh version is used
 docker rmi -f aaronfeves/slingshot-installer:latest > /dev/null 2>&1
 
-# 2. PULL FRESH IMAGE
+# Pull the fresh, verified V1.6.5 image
 docker pull aaronfeves/slingshot-installer:latest
 
-# 3. RUN INSTALLER
+echo ">>> Launching Installer..."
 docker run -it --rm \
-  -e CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project 2>/dev/null) \
+  -e CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project) \
   aaronfeves/slingshot-installer:latest
 
-# 4. SMART CLEANUP
-echo ""
-echo ">>> Performing cleanup..."
-PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$HOME"
-rm -rf "$PROJECT_DIR"
-
-echo ">>> Deployment finished. Returning to home prompt..."
-exec bash
+clear
+echo "Slingshot session ended."
