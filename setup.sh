@@ -3,18 +3,15 @@ clear
 echo "=========================================================="
 echo "          SLINGSHOT TRADING SERVER INSTALLER"
 echo "=========================================================="
-echo "Checking for software updates..."
+echo "FORCING VERSION UPDATE TO V1.6.6..."
 
-# Force remove the old local image to ensure the fresh version is used
-docker rmi -f aaronfeves/slingshot-installer:latest > /dev/null 2>&1
-
-# Pull the fresh, verified V1.6.5 image
-docker pull aaronfeves/slingshot-installer:latest
+# Pull the specific version tag
+docker pull aaronfeves/slingshot-installer:v1.6.6
 
 echo ">>> Launching Installer..."
 docker run -it --rm \
   -e CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project) \
-  aaronfeves/slingshot-installer:latest
+  aaronfeves/slingshot-installer:v1.6.6
 
 clear
 echo "Slingshot session ended."
