@@ -1,17 +1,23 @@
 #!/bin/bash
-clear
+# ==========================================================
+# SLINGSHOT MAGIC LINK BOOTSTRAPPER
+# ==========================================================
+VERSION="v1.6.11"
+
 echo "=========================================================="
 echo "          SLINGSHOT TRADING SERVER INSTALLER"
 echo "=========================================================="
-echo "UPDATING TO VERSION V1.6.11..."
+echo "UPDATING TO VERSION $VERSION..."
 
-# Pull the specific version to ensure we bypass any 'latest' cache issues
-docker pull aaronfeves/slingshot-installer:v1.6.11
+# 1. Force-pull the latest image to bypass local cache
+docker pull aaronfeves/slingshot-installer:$VERSION
+
+# 2. Cleanup any 'none' (dangling) images to keep Cloud Shell clean
+docker image prune -f > /dev/null 2>&1
 
 echo ">>> Launching Installer..."
-docker run -it --rm \
-  -e CLOUDSDK_CORE_PROJECT=$(gcloud config get-value project) \
-  aaronfeves/slingshot-installer:v1.6.11
 
-clear
-echo "Slingshot session ended."
+# 3. Run the installer
+docker run -it --rm \
+  -v "$HOME/.config/gcloud:/root/.config/gcloud" \
+  aaronfeves/slingshot-installer:$VERSION
