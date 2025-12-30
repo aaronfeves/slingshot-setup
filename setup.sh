@@ -2,7 +2,7 @@
 # ==========================================================
 # SLINGSHOT MAGIC LINK BOOTSTRAPPER
 # ==========================================================
-VERSION="v1.6.32"
+VERSION="v1.6.33"
 
 echo "=========================================================="
 echo "          SLINGSHOT TRADING SERVER INSTALLER"
@@ -27,7 +27,7 @@ docker run -it --rm \
 echo ">>> Container exited. Performing host-side cleanup..."
 
 # Remove the image to save your 5GB Cloud Shell space
-docker rmi aaronfeves/slingshot-installer:v1.6.32 --force
+docker rmi aaronfeves/slingshot-installer:v1.6.33 --force
 
 # Remove the temporary files if they exist
 cd ~/
