@@ -2,7 +2,7 @@
 # ==========================================================
 # SLINGSHOT MAGIC LINK BOOTSTRAPPER
 # ==========================================================
-VERSION="v1.6.31"
+VERSION="v1.6.32"
 
 echo "=========================================================="
 echo "          SLINGSHOT TRADING SERVER INSTALLER"
@@ -21,3 +21,16 @@ echo ">>> Launching Installer..."
 docker run -it --rm \
   -v "$HOME/.config/gcloud:/root/.config/gcloud" \
   aaronfeves/slingshot-installer:$VERSION
+
+
+# 2. After the container closes, the host (Cloud Shell) does the cleanup
+echo ">>> Container exited. Performing host-side cleanup..."
+
+# Remove the image to save your 5GB Cloud Shell space
+docker rmi aaronfeves/slingshot-installer:v1.6.32 --force
+
+# Remove the temporary files if they exist
+cd ~/
+rm -rf ~/cloudshell_open
+
+echo ">>> All clean. Deployment complete."
